@@ -35,8 +35,8 @@ spring.kafka.consumer.key-deserializer= org.apache.kafka.common.serialization.St
 spring.kafka.consumer.value-deserializer= org.apache.kafka.common.serialization.StringDeserializer
 
 spring.kafka.producer.bootstrap-servers: localhost:9092
-spring.kafka.producer.key-deserializer= org.apache.kafka.common.serialization.StringSerializer
-spring.kafka.producer.value-deserializer= org.apache.kafka.common.serialization.StringSerializer
+spring.kafka.producer.key-serializer= org.apache.kafka.common.serialization.StringSerializer
+spring.kafka.producer.value-serializer= org.apache.kafka.common.serialization.StringSerializer
 
 
 ```
@@ -121,3 +121,67 @@ public class KafkaConsumer {
     }
 }
 ```
+
+---
+
+### Json Serializer and Deserializer
+```sh
+
+spring.kafka.consumer.bootstrap-servers= localhost:9092
+spring.kafka.consumer.group_id= myGroup
+spring.kafka.consumer.auto-offset-reset= earliest
+spring.kafka.consumer.key-deserializer= org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.consumer.value-deserializer= org.springframework.kafka.support.serializer.JsonDeserializer
+
+spring.kafka.producer.bootstrap-servers= localhost:9092
+spring.kafka.producer.key-serializer= org.apache.kafka.common.serialization.StringSerializer
+spring.kafka.producer.value-serializer= org.springframework.kafka.support.serializer.JsonSerializer
+
+```
+
+### Create New Topic
+
+```sh
+@Bean
+public  NewTopic highwayJsonTopic(){
+      return  TopicBuilder.name("highway_json")
+                .build();
+}
+```
+
+### Create Json Producer 
+```sh
+
+@Service
+public class JsonKafkaProducer {
+    private  static  final Logger LOGGER = LoggerFactory.getLogger(JsonKafkaProducer.class);
+
+    private final KafkaTemplate<String, User> kafkaTemplate ;
+
+    public JsonKafkaProducer(KafkaTemplate<String, User> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
+    public  void sendMessage(User data){
+        Message<User> message = MessageBuilder
+                .withPayload(data)
+                .setHeader(KafkaHeaders.TOPIC,"highway_json")
+                .build();
+        kafkaTemplate.send(message);
+    }
+}
+
+```
+
+### Create Json Consumer
+```shell
+
+@Service
+public class JsonKafkaConsumer {
+    private  static  final Logger LOGGER = LoggerFactory.getLogger(JsonKafkaConsumer.class);
+    @KafkaListener(topics = "highway_json",groupId = "myGroup")
+    public  void consumer(User user){LOGGER.info(String.format("Json Message is received : %s",user));
+    }
+}
+
+```
+
