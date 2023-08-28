@@ -15,6 +15,7 @@ public class OrderService {
         orderAction.saveToDatabase(order);
 
         // flatten message & publish (to implement)
+        order.getOrderItems().forEach(orderAction::publishToKafka);
         return  order.getOrderNumber();
     }
 }

@@ -14,4 +14,6 @@ public record OrderMessage(
         String itemName,
         int price,
         int quantity
-) {}
+) {
+
+}

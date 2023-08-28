@@ -2,6 +2,8 @@ package com.isaachome.oms.command.action;
 
 import com.isaachome.oms.api.request.OrderItemRequest;
 import com.isaachome.oms.api.request.OrderRequest;
+import com.isaachome.oms.broker.message.OrderMessage;
+import com.isaachome.oms.broker.producer.OrderProducer;
 import com.isaachome.oms.entity.Order;
 import com.isaachome.oms.entity.OrderItem;
 import com.isaachome.oms.repos.OrderItemRepos;
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
 @Component
 public class OrderAction {
 
+    @Autowired
+    private OrderProducer orderProducer;
 
     @Autowired
     private OrderRepos orderRepos;
@@ -31,7 +35,18 @@ public class OrderAction {
 
 
     // publish to kafka message broker
-
+    public void publishToKafka(OrderItem orderItem){
+        var orderMessage = new OrderMessage(
+                orderItem.getOrder().getOrderLocation(),
+                orderItem.getOrder().getOrderNumber(),
+                orderItem.getOrder().getCreditCardNumber(),
+                orderItem.getOrder().getOrderDateTime(),
+                orderItem.getItemName(),
+                orderItem.getPrice(),
+                orderItem.getQuantity()
+        );
+        orderProducer.sendMessage(orderMessage);
+    }
 
     public Order converToOrder(OrderRequest data){
         var order = new Order();
