@@ -17,6 +17,7 @@
   <url>http://maven.apache.org</url>
   <modules>
     <module>kafka-order-service</module>
+      <module>kafka-storage-service</module>
   </modules>
 
   <properties>
