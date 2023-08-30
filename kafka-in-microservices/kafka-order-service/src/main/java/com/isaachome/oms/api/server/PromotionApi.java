@@ -18,7 +18,8 @@ public class PromotionApi {
     private PromotionService promotionService;
     @PostMapping
     public ResponseEntity<String> create(@RequestBody PromotionRequest promotionRequest){
-//        promotionService
-     return ResponseEntity.status(HttpStatus.CREATED).body("Successfully-created");
+//       promotionService
+        promotionService.createPromotion(promotionRequest);
+     return ResponseEntity.status(HttpStatus.CREATED).body(promotionRequest.promotionCode());
     }
 }

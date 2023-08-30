@@ -1,4 +1,4 @@
-package com.isaachome.storage.broker.message;
+package com.isaachome.oms.broker.message;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
