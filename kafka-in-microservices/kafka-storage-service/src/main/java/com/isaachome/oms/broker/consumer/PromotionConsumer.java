@@ -1,5 +1,6 @@
 package com.isaachome.oms.broker.consumer;
 
+import com.isaachome.oms.broker.message.DiscountMessage;
 import com.isaachome.oms.broker.message.PromotionMessage;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.kafka.annotation.KafkaHandler;
@@ -16,4 +17,8 @@ public class PromotionConsumer {
         log.info("Processing promotion : {}", message);
     }
 
+    @KafkaHandler
+    public  void  listenDiscount(DiscountMessage message){
+        log.info("Processing Discount : {} ",message);
+    }
 }
