@@ -16,9 +16,11 @@
   <name>kafka-in-microservices</name>
   <url>http://maven.apache.org</url>
   <modules>
-    <module>kafka-order-service</module>
-      <module>kafka-storage-service</module>
-    <module>kafka-order-stream</module>
+    <module>order-api</module>
+      <module>storage-service</module>
+    <module>order-stream-service</module>
+      <module>order-pattern-service</module>
+      <module>order-reward-service</module>
   </modules>
 
   <properties>
