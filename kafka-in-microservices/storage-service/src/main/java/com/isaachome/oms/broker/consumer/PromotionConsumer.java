@@ -7,7 +7,7 @@ import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 @KafkaListener(topics = "t-commodity-promotion")
 @Log4j2
 public class PromotionConsumer {
